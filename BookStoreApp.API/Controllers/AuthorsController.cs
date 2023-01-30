@@ -87,7 +87,7 @@ namespace BookStoreApp.API.Controllers
           Author author =   _mapper.Map<Author>(authorDto);
           if (_context.Authors == null)
           {
-              return Problem("Entity set 'BookStoreDbContext.Authors'  is null.");
+                throw new Exception("Entity set 'BookStoreDbContext.Authors'  is null.");
           }
             _context.Authors.Add(author);
             await _context.SaveChangesAsync();
