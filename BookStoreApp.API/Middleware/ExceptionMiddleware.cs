@@ -53,6 +53,10 @@ namespace BookStoreApp.API.Middleware
                     statusCode = HttpStatusCode.Conflict;
                     errorDetails.ErrorType = "Db Update Concurrency Exception";
                     break;
+                case ArgumentNullException:
+                    statusCode = HttpStatusCode.BadRequest;
+                    errorDetails.ErrorMessage = "Missing Argument";
+                    break;
             }
 
             string response = JsonConvert.SerializeObject(errorDetails);
