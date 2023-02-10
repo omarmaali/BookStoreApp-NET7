@@ -1,0 +1,52 @@
+﻿@page "/users/login"
+@inject IAuthenticationService _authenticationService 
+@inject NavigationManager navigationManager
+<h3>Login</h3>
+<div class="card-body">
+    <EditForm Model="LoginModel" OnValidSubmit="HandleLogin">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+        <div class="form-group">
+            <label for="email">Email Address</label>
+            <InputText class="form-control" @bind-Value="LoginModel.Email" />
+            <ValidationMessage For="@(() => LoginModel.Email)" />
+        </div>   
+        <div class="form-group">
+            <label for="password">Password</label>
+            <InputText class="form-control" type="password" @bind-Value="LoginModel.Password" />
+            <ValidationMessage For="@(() => LoginModel.Password)" />
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Login</button>
+    </EditForm>
+</div>
+
+@code {
+    UserLoginDto LoginModel = new UserLoginDto();
+    string message = String.Empty;
+    public async Task HandleLogin()
+    {
+        try
+        {
+            var response = await _authenticationService.AuthenticateAsync(LoginModel);
+            if(response)
+            {
+                navigationManager.NavigateTo("/");
+
+            }
+            else
+            {
+                message = "Invalid Credintials, Please try again";
+            }
+
+
+        }
+        catch(ApiException ex)
+        {
+            message = ex.Message;   
+        }
+        catch (Exception ex)
+        {
+            message = ex.Message;
+        }
+    }
+}

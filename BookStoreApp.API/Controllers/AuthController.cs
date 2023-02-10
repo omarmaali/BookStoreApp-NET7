@@ -67,7 +67,7 @@ namespace BookStoreApp.API.Controllers
 
             string token = await GenerateToken(user);
 
-                return Accepted( new AuthenticationResponse()
+                return Ok( new AuthenticationResponse()
                 {
                     Email = user.Email,
                     UserName = user.Email,
@@ -89,7 +89,9 @@ namespace BookStoreApp.API.Controllers
                 new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                 new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                new Claim("UserID", user.Id)
+                new Claim("UserID", user.Id),
+                new Claim(ClaimTypes.Name, $"{user.FirstName} {user.LastName}")
+
             }.Union(rolesClaims);
 
 
